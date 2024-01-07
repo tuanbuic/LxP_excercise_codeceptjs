@@ -1,46 +1,50 @@
-const { pause } = require('codeceptjs');
-const data = require('./data');
-
-const { I } = inject();
 Feature('App Installation @android ');
 
-Scenario('App is installed successfully', async ({ I }) => {
+Scenario('App is installed successfully', async ({ I,webPage,mobilePage }) => {
     //Web Testing
-    I.amOnPage('https://web.qa.leapxpert.app');
-    I.fillField({ css: 'input' }, 'auto');
-    I.pressKey('Enter');
-    I.fillField(
-        { css: "input[data-testid='usernameLogin']" },
-        'automation_auto_1316'
-    );
-    I.fillField(
-        { css: "input[data-testid='passwordLogin']" },
-        'Leaptesting@123'
-    );
-    I.pressKey('Enter');
-    I.fillField({ css: "input[data-testid='otp-input-0']" }, '1');
-    I.fillField({ css: "input[data-testid='otp-input-1']" }, '1');
-    I.fillField({ css: "input[data-testid='otp-input-2']" }, '1');
-    I.fillField({ css: "input[data-testid='otp-input-3']" }, '1');
-    I.fillField({ css: "input[data-testid='otp-input-4']" }, '1');
-    I.fillField({ css: "input[data-testid='otp-input-5']" }, '1');
-    I.waitForElement(
-        { css: "button[data-testid^='avatar'][class*='_clickable']" },
-        30
-    );
-    I.click({ css: "button[data-testid^='avatar'][class*='_clickable']" });
-    I.click({ css: "div[data-testid='btn-devices']" });
-    I.click({ css: "button[data-testid='link-device']" });
-    const Activation = await I.grabTextFrom({
-        css: "div[class^='LinkDeviceModal_code-name']"
-    });
-    console.log(Activation);
+    I.switchHelper('WebDriver');
+    webPage.open('https://web.qa.leapxpert.app');
+    webPage.login('automation_auto_1316','Leaptesting@123','auto')
+    const activationCode = await webPage.getActivationCode();
+    webPage.closeLinkDeviceModal();
+    webPage.logOut();
+    I.switchHelper('Appium');
+    mobilePage.inputActivationCode(activationCode);
+    mobilePage.loginWithPassword('Leaptesting@123')
+    // I.waitForElement(
+    //     '//android.widget.EditText[@content-desc="login_password"]',
+    //     10
+    // );
+    // I.fillField(
+    //     '//android.widget.EditText[@content-desc="login_password"]',
+    //     'Leaptesting@123'
+    // );
+    // I.click('//android.view.ViewGroup[@content-desc="login_signIn"]');
+    // I.waitForElement('//android.widget.EditText[@content-desc="otp_0"]', 10);
+    // I.fillField('//android.widget.EditText[@content-desc="otp_0"]', '111111');
 
-    await I.runOnAndroid(async () => {
-        await I.installApp('./app_files/qa-v20100017.apk');
-        await I.seeAppIsInstalled(data.packageName);
-        await I.waitForClickable('~skip');
-        await I.click('~skip');
-        await I.click('~Activation Code');
-    });
+    // I.waitForElement(
+    //     '//android.view.ViewGroup[@content-desc="bottomTab_contact"]',
+    //     30
+    // );
+    // I.click('//android.view.ViewGroup[@content-desc="bottomTab_contact"]');
+    mobilePage.goToContactMenu();
+    mobilePage.goToTeamTab();
+    mobilePage.searchWithClientName('automation_auto_1317')
+    // I.pressKey('Enter');
+    mobilePage.chooseFirstRecordInSearchResult();
+    // I.waitForElement(
+    //     '//android.widget.TextView[@content-desc="Auto 1317 User 1317"]',
+    //     15
+    // );
+    // I.click('//android.widget.TextView[@content-desc="Auto 1317 User 1317"]');
+    mobilePage.goToUserChat();
+
+    I.switchHelper('WebDriver');
+    webPage.open('https://web.qa.leapxpert.app');
+    webPage.login('automation_auto_1317','Leaptesting@123','auto')
+    webPage.waitForPageCompleteLoaded();
+    I.waitForElement({xpath:`(//div[starts-with(@data-testid, "ChatMessage")]/div/span[@data-testid="message-item"])[last()]`});
+    I.seeTextEquals('This is a test message',{xpath:`(//div[starts-with(@data-testid, "ChatMessage")]/div/span[@data-testid="message-item"])[last()]`})
+    I.seeTextEquals('Reply message',{xpath:`(//div[starts-with(@data-testid, "ChatMessage")]//div[contains(@class, "MessageReply")]//span[@data-testid="message-item"])[last()]`})
 });

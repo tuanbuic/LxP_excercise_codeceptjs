@@ -1,5 +1,3 @@
-const data = require('./data');
-
 const DEFAULT_PORT = 4723;
 export const caps = {
     androidCaps: {
@@ -11,7 +9,7 @@ export const caps = {
         path: '/wd/hub',
         browser: '',
         desiredCapabilities: {
-            appPackage: data.packageName,
+            appPackage: 'com.leapxpert.manager.qa',
             appActivity: 'com.leapxpertapp.MainActivity',
             deviceName: process.env.DEVICE || 'emulator-5554',
             platformName: process.env.PLATFORM || 'android',

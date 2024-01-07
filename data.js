@@ -1,6 +1,6 @@
-const data = {
-    packageName: 'com.leapxpert.manager.qa',
-    smallWaitingTimeInSecs: 2
-};
+// const data = {
+//     packageName: 'com.leapxpert.manager.qa',
+//     smallWaitingTimeInSecs: 2
+// };
 
-export default data;
+// export default data;
