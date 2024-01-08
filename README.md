@@ -9,6 +9,7 @@
 2. How to Run it
 
 -   First start appium using command `npx appium --base-path=/wd/hub`
+-   Run a android emulator device using Android 10
 -   Run the script using command `npx codeceptjs run --plugins cucumberJsonReporter --grep "@test"`
 -   For generating the Report: `node .\reporter.js`
 
