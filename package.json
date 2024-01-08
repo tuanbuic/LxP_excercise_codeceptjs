@@ -3,10 +3,10 @@
     "dependencies": {
         "appium": "^2.3.0",
         "codeceptjs": "^3.5.10",
-        "import-export": "^1.0.1",
-        "webdriverio": "^8.3.5",
+        "codeceptjs-cucumber-json-reporter": "^1.0.8",
         "cucumber-html-reporter": "^5.5.0",
-        "codeceptjs-cucumber-json-reporter": "^1.0.8"
+        "import-export": "^1.0.1",
+        "webdriverio": "^8.3.5"
     },
     "devDependencies": {
         "@wdio/selenium-standalone-service": "^7.30.0"

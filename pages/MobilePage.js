@@ -7,7 +7,8 @@ class MobilePage {
             '//android.widget.TextView[@content-desc="Activation Code"]';
         this.activationCodeInput =
             '//android.widget.EditText[@content-desc="activation_0"]';
-        this.passwordInput ='//android.widget.EditText[@content-desc="login_password"]'
+        this.passwordInput =
+            '//android.widget.EditText[@content-desc="login_password"]';
         this.signInButton =
             '//android.view.ViewGroup[@content-desc="login_signIn"]';
         this.OTPCode = '//android.widget.EditText[@content-desc="otp_0"]';
@@ -32,18 +33,13 @@ class MobilePage {
             '//android.view.ViewGroup[@content-desc="chatDetail_sendMessage"]';
         this.MessageContainer =
             '//android.widget.FrameLayout[@resource-id="android:id/content"]';
-        this.getLatestMessageReplySelector = (message) => {
-            return `(//android.view.ViewGroup[@content-desc="${message}"])[1]/android.view.ViewGroup/android.view.ViewGroup`;
-        };
-        this.replyOption = '//android.widget.TextView[@content-desc="Reply"]';
-
     }
     inputActivationCode(activationCode) {
         I.waitForElement(this.skipButton, 10);
         I.click(this.skipButton);
         I.waitForElement(this.activationCodeButton, 10);
         I.click(this.activationCodeButton);
-        I.waitForElement(this.activationCodeInput,5);
+        I.waitForElement(this.activationCodeInput, 5);
         I.fillField(this.activationCodeInput, activationCode);
     }
     loginWithPassword(password) {
@@ -83,26 +79,23 @@ class MobilePage {
         I.click(this.profileChatButton);
     }
     sendMessage(message) {
-        I.switchHelper('Appium');
         I.waitForElement(this.sendMessageBox, 10);
         I.click(this.sendMessageBox);
         I.fillField(this.messageInput, message);
         I.click(this.sendMessageButton);
+        //wait for message sent
+        I.wait(2);
     }
     async replyToLatestMessageSent(messageTargetForReply, messageReply) {
         I.switchHelper('Appium');
         I.click(this.MessageContainer);
         //wait  for the latest message have a fixed location after hide keyboard from screen
-        I.wait(5);
-        console.log(`getLatestMessageReplySelector:`,this.getLatestMessageReplySelector(messageTargetForReply))
+        I.wait(2);
         const value = await I.grabElementBoundingRect(
-            this.getLatestMessageReplySelector(messageTargetForReply)
+            `(//android.view.ViewGroup[@content-desc="${messageTargetForReply}"])[1]/android.view.ViewGroup/android.view.ViewGroup`
         );
-        console.log(`value`, value);
         const sourceX = parseInt(value['x']) + parseInt(value['width']) / 2;
         const sourceY = parseInt(value['y']) + parseInt(value['height']) / 2;
-        console.log({ sourceX, sourceY });
-
         I.touchPerform([
             {
                 action: 'press',
@@ -119,8 +112,11 @@ class MobilePage {
             },
             { action: 'release' }
         ]);
-        I.waitForElement(this.replyOption, 10);
-        I.click(this.replyOption);
+        I.waitForElement(
+            '//android.widget.TextView[@content-desc="Reply"]',
+            10
+        );
+        I.click('//android.widget.TextView[@content-desc="Reply"]');
         this.sendMessage(messageReply);
     }
 }

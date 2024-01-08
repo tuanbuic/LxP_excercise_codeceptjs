@@ -19,11 +19,14 @@ class WebPage {
         this.confirmLogOutButton =
             'button[data-testid="btn-right"] > span[class*=MuiButton]';
         this.loadingIcon = 'div[data-testid="loading-wrapper"]';
-        this.latestSendMessage='(//div[starts-with(@data-testid, "ChatMessage")]/div/span[@data-testid="message-item"])[last()]}';
-        this.latestReplyMessage='(//div[starts-with(@data-testid, "ChatMessage")]//div[contains(@class, "MessageReply")]//span[@data-testid="message-item"])[last()]';
+        this.latestSendMessage =
+            '(//div[starts-with(@data-testid, "ChatMessage")]/div/span[@data-testid="message-item"])[last()]';
+        this.latestReplyMessage =
+            '(//div[starts-with(@data-testid, "ChatMessage")]//div[contains(@class, "MessageReply")]//span[@data-testid="message-item"])[last()]';
     }
     // insert your methods here
     open(url) {
+        I.switchHelper('WebDriver');
         I.amOnPage(url);
     }
     login(username, password, companyName) {
@@ -73,5 +76,4 @@ class WebPage {
     }
 }
 
-// For inheritance
 module.exports = new WebPage();
