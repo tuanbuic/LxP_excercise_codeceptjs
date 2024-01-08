@@ -14,5 +14,10 @@
 -   For generating the Report: `node .\reporter.js`
 
 3. Problem I Have encounter
-    1. There are no official helper in codeceptjs to switch driver between Appium and Webdriver. So I did a hack from this issue to overcome: https://github.com/codeceptjs/CodeceptJS/issues/975 and using the switchHelper method
+    1. There are no official solution in codeceptjs to switch driver between Appium and Webdriver. So I did a hack from this issue to overcome: https://github.com/codeceptjs/CodeceptJS/issues/975 and using the switchHelper method
     2. When I using the touchActionPerform. I'm not really sure why the test will ignore the touchPerform method and run the Webdriver first(The step for checking the message) --> So I did comment it out --> Hopefully I can have a feedback on this since I really want to understand why
+4. What need to be improved
+- I will use dotenv for support multi environment
+- Setup global config: time for waiting ...etc
+- Split the POM into more detail page
+- Write some common method for waiting and clicking the element
